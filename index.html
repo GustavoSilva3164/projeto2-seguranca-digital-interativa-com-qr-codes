@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>
+    Proteção contra Vírus - Terminal Hacker
+  </title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: #000;
+      color: #00ff00;
+      font-family: 'Courier New', Courier, monospace;
+      padding: 20px;
+      min-height: 100vh;
+      overflow-y: auto;
+    }
+
+    .terminal {
+      background-color: #111;
+      padding: 30px;
+      border: 2px solid #00ff00;
+      box-shadow: 0 0 15px #00ff00;
+      max-width: 900px;
+      margin: 0 auto;
+      text-align: left;
+      width: 100%;
+    }
+
+    button {
+      background-color: transparent;
+      color: #00ff00;
+      border: 1px solid #00ff00;
+      padding: 10px 20px;
+      cursor: pointer;
+      margin-top: 20px;
+      font-family: 'Courier New', Courier, monospace;
+    }
+
+    button:hover {
+      background-color: #00ff00;
+      color: #000;
+    }
+
+    .conteudo {
+      margin-top: 20px;
+      white-space: pre-line;
+    }
+
+    .quiz {
+      margin-top: 30px;
+    }
+
+    .pergunta {
+      margin-bottom: 20px;
+    }
+
+    .opcao {
+      cursor: pointer;
+      margin: 5px 0;
+      display: block;
+      padding: 5px;
+      border: 1px solid #00ff00;
+      width: fit-content;
+    }
+
+    .opcao:hover {
+      background-color: #00ff00;
+      color: #000;
+    }
+
+    .feedback {
+      margin-top: 10px;
+      color: #00ff00;
+    }
+  </style>
+</head>
+<body>
+  <div class="terminal">
+    <h1>Bem-vindo ao Sistema de Defesa</h1>
+    <h2>PROJETO DE SEGURANÇA DA INFORMAÇÃO: 2° DS</h2>
+    <h3>DUPLA: Gustavo Silva e Gustavo Texeira</h3>
+    <div id="conteudo" class="conteudo"></div>
+    <button onclick="mostrarConteudo()">Iniciar Diagnóstico</button>
+    <div id="quiz" class="quiz" style="display: none;"></div>
+  </div>
+
+  <script>
+    let respostasCertas = [
+      "Cavalo de Troia",
+      "Sequestra arquivos e pede resgate",
+      "Atualize sempre seu sistema e programas"
+    ];
+
+    let respostasUsuario = [null, null, null];
+
+    function mostrarConteudo() {
+      const conteudo = `
+==> TIPOS DE VÍRUS DIGITAIS:
+
+1. Worms: Se replicam sem interação do usuário.
+2. Cavalos de Troia: Disfarçados de programas legítimos.
+3. Ransomware: Sequestram seus arquivos e exigem resgate.
+4. Spyware: Espionam suas atividades.
+5. Rootkits: Permitem acesso remoto ao seu sistema.
+6. Adware: Exibem anúncios maliciosos.
+7. Botnets: Transformam seu PC em um robô controlado por hackers.
+
+==> COMO SE PROTEGER:
+
+✓ Mantenha o antivírus sempre atualizado.
+✓ Não clique em links ou anexos suspeitos.
+✓ Atualize seu sistema operacional e programas regularmente.
+✓ Evite sites desconhecidos ou duvidosos.
+✓ Use senhas fortes e ative a autenticação em dois fatores.
+✓ Faça backups frequentes dos seus arquivos.
+
+>> Segurança não é um luxo, é uma necessidade. <<
+`;
+
+      document.getElementById('conteudo').textContent = conteudo;
+      document.getElementById('quiz').style.display = "block";
+      iniciarQuiz();
+    }
+
+    function iniciarQuiz() {
+      const quizContainer = document.getElementById('quiz');
+      const perguntas = [
+        {
+          pergunta: "1. Qual vírus se disfarça de programa legítimo?",
+          opcoes: ["Worm", "Cavalo de Troia", "Spyware"],
+          correta: "Cavalo de Troia"
+        },
+        {
+          pergunta: "2. O que o Ransomware faz?",
+          opcoes: ["Exibe anúncios", "Espiona o usuário", "Sequestra arquivos e pede resgate"],
+          correta: "Sequestra arquivos e pede resgate"
+        },
+        {
+          pergunta: "3. Qual dessas é uma boa prática de segurança?",
+          opcoes: [
+            "Clique em qualquer link de e-mail",
+            "Use senhas fracas para lembrar fácil",
+            "Atualize sempre seu sistema e programas"
+          ],
+          correta: "Atualize sempre seu sistema e programas"
+        }
+      ];
+
+      let htmlQuiz = '<h2>==> QUIZ: Teste seu conhecimento</h2>';
+
+      perguntas.forEach((p, index) => {
+        htmlQuiz += `<div class="pergunta"><strong>${p.pergunta}</strong><br/>`;
+        p.opcoes.forEach(opcao => {
+          htmlQuiz += `<span class="opcao" onclick="verificarResposta(${index}, '${opcao}')">${opcao}</span>`;
+        });
+        htmlQuiz += `<div id="feedback-${index}" class="feedback"></div></div>`;
+      });
+
+      // Botão de ver resultado
+      htmlQuiz += `
+        <button onclick="verResultado()">Ver Resultado Final</button>
+        <div id="mensagem-final" class="feedback" style="margin-top: 20px;"></div>
+      `;
+
+      quizContainer.innerHTML = htmlQuiz;
+    }
+
+    function verificarResposta(indice, resposta) {
+      const feedbackEl = document.getElementById(`feedback-${indice}`);
+      respostasUsuario[indice] = resposta;
+
+      if (resposta === respostasCertas[indice]) {
+        feedbackEl.textContent = "✅ Correto!";
+      } else {
+        feedbackEl.textContent = "❌ Incorreto. Tente novamente!";
+      }
+    }
+
+    function verResultado() {
+      const mensagemEl = document.getElementById("mensagem-final");
+
+      if (respostasUsuario.every((r, i) => r === respostasCertas[i])) {
+        mensagemEl.innerHTML = `
+🎉 PARABÉNS! Você dominou a arte da cibersegurança! 🎉
+
+🟢 Acesso autorizado aos arquivos secretos:
+
+> SENHA: [REDACTED]
+> Localização: Servidor Sombra
+> Nível de Acesso: ROOT
+
+Continue protegendo o ciberespaço. O mundo precisa de você, hacker ético!
+`;
+      } else {
+        mensagemEl.textContent = "⚠️ Nem todas as respostas estão corretas. Revise e tente novamente!";
+      }
+    }
+  </script>
+</body>
+</html>
